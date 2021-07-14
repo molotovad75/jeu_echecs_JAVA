@@ -3,7 +3,8 @@ package fr.molotovad79.jeu_d_échecs.pièce;
 public class Reine extends Pièce implements FonctionPièces,Echec_Roi {
 
 	private Reine[][] posQ=(Reine[][]) getPosPièce();
-	public Reine(CouleurPièce coulPièce,String initiale,Pièce[][] posPièce) {
+	
+	public Reine(CouleurPièce coulPièce,String initiale,Pièce[][] posPièce) { // constructeur
 		super(coulPièce, "Q",posPièce);
 	}
 	
@@ -25,7 +26,8 @@ public class Reine extends Pièce implements FonctionPièces,Echec_Roi {
 	@Override
 	public void manger(Pièce p) {
 		int xReine=reine().getX(),yReine=reine().getY();
-		Pièce[][] pos= getPosPièce();
+		Pièce[][] pos= p.getPosPièce();
+		Pièce[][] pos2= getPosPièce();
 		//pos[x][y]=pos[p1().getX()][p1().getY()];
 		while((/*EST ET OUEST */posQ[p.getX()][yReine]==pos[p.getX()][p.getY()] ||
 				 /*NORD ET SUD*/ posQ[xReine][p.getY()]==pos[p.getX()][p.getY()] ||
@@ -35,18 +37,20 @@ public class Reine extends Pièce implements FonctionPièces,Echec_Roi {
 				/*Direction SUD-EST*/posQ[xReine+(p.getX()-xReine)][yReine-(yReine-p.getY())]==pos[p.getX()][p.getY()])
 				&& p!=null && p!=roi() && pos[p.getX()][p.getY()]!=pos[getX()][getY()]
 				&& pos[p.getX()][p.getY()]!=pos[getX()][getY()]) {
+			
 			for(int i=xReine+1;i<=p.getX()-1;i++) {
 				for(int j=yReine+1;j<=p.getY()-1;j++) {
 					for(int d=xReine-1;d>=p.getX()-1;d--) {
 						for(int k=yReine-1;k>=p.getY()-1;k--) {
-							if(/*EST*/posQ[i][yReine]==pos[p2().getX()][p2().getY()]  
-								||/*NORD*/ posQ[xReine][j]==pos[p2().getX()][p2().getY()]
-								||/*OUEST*/posQ[d][yReine]==pos[p2().getX()][p2().getY()]
-								||/*SUD*/posQ[xReine][k]==pos[p2().getX()][p2().getY()] 
-								||/*NORD-EST*/posQ[i][j]==pos[p2().getX()][p2().getY()] 
-								|| /*NORD-OUEST*/posQ[d][j]==pos[p2().getX()][p2().getY()] 
-								|| /*SUD-EST*/posQ[i][k]==pos[p2().getX()][p2().getY()] 
-								||/*SUD-OUEST*/posQ[d][j]==pos[p2().getX()][p2().getY()] ){
+							/*On vérifie qu'il n'y a pas de pièce qui entrave la circulation de la dame*/
+							if(/*EST*/posQ[i][yReine]==pos2[getX()][getY()]  
+								||/*NORD*/ posQ[xReine][j]==pos2[getX()][getY()]
+								||/*OUEST*/posQ[d][yReine]==pos2[getX()][getY()]
+								||/*SUD*/posQ[xReine][k]==pos2[getX()][getY()] 
+								||/*NORD-EST*/posQ[i][j]==pos2[getX()][getY()] 
+								|| /*NORD-OUEST*/posQ[d][j]==pos2[getX()][getY()] 
+								|| /*SUD-EST*/posQ[i][k]==pos2[getX()][getY()] 
+								||/*SUD-OUEST*/posQ[d][j]==pos2[getX()][getY()] ){
 								System.out.println("Tu ne peux manger dans cette direction si une pièce s'interpose"
 										+ "dans ton chemin ! Tu peux la manger cette pièce qui te gène aussi ^^");
 							}else {
@@ -64,10 +68,10 @@ public class Reine extends Pièce implements FonctionPièces,Echec_Roi {
 								
 								
 								if (p.getCoulPièce().equals(CouleurPièce.BLANC)==true) {
-									reine().setInitiale("QN");
+									reine().setInitiale("Q "+reine().getCoulPièce().name());
 								}
 								else if(p.getCoulPièce().equals(CouleurPièce.NOIR)==true) {
-									reine().setInitiale("QB");
+									reine().setInitiale("Q "+reine().getCoulPièce().name());
 								}
 								
 								p.equals(null);
@@ -98,7 +102,8 @@ public class Reine extends Pièce implements FonctionPièces,Echec_Roi {
 	public void bouger(int x, int y) {
 		int xReine=reine().getX(),yReine=reine().getY();
 		Pièce[][] pos= getPosPièce();
-		Pièce [][] pos2=getPosPièce();
+		Pièce [][] pos2=getPosPièce();  
+		/*Le while c'est pour les mouvements autorisés de la reine*/
 		while((/*EST ET OUEST */posQ[x][yReine]==pos2[x][y] ||
 				 /*NORD ET SUD*/ posQ[xReine][y]==pos2[x][y] ||
 				/*Direction NORD-EST*/posQ[xReine+(x-xReine)][yReine+(y-yReine)]==pos2[x][y] ||
@@ -111,18 +116,67 @@ public class Reine extends Pièce implements FonctionPièces,Echec_Roi {
 				for(int j=yReine+1;j<=y;j++) {
 					for(int d=xReine-1;d>=x;d--) {
 						for(int k=yReine-1;k>=y;k--) {
-							if(/*EST*/posQ[i][yReine]!= pos[p1().getX()][p1().getY()]
-								||/*NORD*/ posQ[xReine][j]!=pos[p1().getX()][p1().getY()]
-								||/*OUEST*/posQ[d][yReine]!=pos[p1().getX()][p1().getY()]
-								||/*SUD*/posQ[xReine][k]!= pos[p1().getX()][p1().getY()]
-								||/*NORD-EST*/posQ[i][j]!= pos[p1().getX()][p1().getY()]
-								|| /*NORD-OUEST*/posQ[d][j]!=pos[p1().getX()][p1().getY()]
-								|| /*SUD-EST*/posQ[i][k]!=pos[p1().getX()][p1().getY()]
-								||/*SUD-OUEST*/posQ[d][j]!=pos[p1().getX()][p1().getY()]){
+							/*Le if c'est pour pas que la reine bouge sur une autre pièce */
+							if(/*EST*/posQ[i][yReine]!= pos[getX()][getY()]
+								||/*NORD*/ posQ[xReine][j]!=pos[getX()][getY()]
+								||/*OUEST*/posQ[d][yReine]!=pos[getX()][getY()]
+								||/*SUD*/posQ[xReine][k]!= pos[getX()][getY()]
+								||/*NORD-EST*/posQ[i][j]!= pos[getX()][getY()]
+								|| /*NORD-OUEST*/posQ[d][j]!=pos[getX()][getY()]
+								|| /*SUD-EST*/posQ[i][k]!=pos[getX()][getY()]
+								||/*SUD-OUEST*/posQ[d][j]!=pos[getX()][getY()]){
 								reine().setInitiale(null);
 								posQ[xReine][yReine]=(Reine) pos2[x][y];
 								reine().setPosPièce(posQ);
-								reine().setInitiale("Q");
+								reine().setInitiale("Q"+reine().getCoulPièce().name());
+								
+								
+								
+								//int xReine=reine().getX(), yReine=reine().getY();
+								int xRoi=roi().getX(),yRoi=roi().getY();
+								//Pièce[][] pos= getPosPièce();
+								Pièce[][] posR= roi().getPosPièce();
+								
+								for (int i1 = 0; i1 < xReine; i1++) { //vérifier en horizontal à gauche de la dame for 1
+									for (int j1 = xReine+1; j1 <8 ; j1++) { //vérifier en horizontal à droite de la dame for 2
+										for (int d1 = 0;  d1 < yReine; d1++) { //vérifier en verticale en bas de la dame for 3
+											for (int k1 = yReine+1; k1 < 8; k1++) { //vérifier en vertical en haut de la dame for 4
+												
+												for (int i2 = 1; i2 < 8; i2++) {  //for 5
+													for (int j2 = 1; j2 < 8; j2++) { //for 6
+														//1ère partie du if on vérifie s'il ya le roi.
+														if(( 	posQ[i1][yReine]==posR[xRoi][yRoi] || posQ[j1][yReine]==posR[xRoi][yRoi] //Si dans le sens horizontal, la reine croise  
+																||posQ[xReine][d1]==posR[xRoi][yRoi] || posQ[xReine][k1]==posR[xRoi][yRoi]
+																/*Les deux lignes au dessus, on s'assure que la dame repère le roi en horizontal et vertical*/	
+																|| posQ[xReine+i2][yReine+j2]==posR[xRoi][yRoi] /*NORD-EST*/ || posQ[xReine-i2][yReine-j2]==posR[xRoi][yRoi] /*SUD-OUEST*/ 
+																|| posQ[xReine-i2][yReine+j2]==posR[xRoi][yRoi] /*NORD-OUEST*/ || posQ[xReine+i2][yReine-j2]==posR[xRoi][yRoi]/*SUD-EST*/)
+																/*Les lignes au dessus on assure les diagonales de la reine*/
+																
+																
+																	&&
+																	
+																	(posQ[i1][yReine]!=pos[getX()][getY()] || posQ[j1][yReine]!=pos[getX()][getY()] 
+																	|| posQ[xReine][d1]!=pos[getX()][getY()] || posQ[xReine][k1]!=pos[getX()][getY()]
+																/*Les deux lignes au dessus, on s'assure que la dame ne rencontre pas de pièces en horizontal et vertical entre elle et le roi*/
+																	|| posQ[xReine+i2][yReine+j2]!=pos[getX()][getY()] /*NORD-EST*/ || posQ[xReine-i2][yReine-j2]!=pos[getX()][getY()] /*SUD-OUEST*/ 
+																	|| posQ[xReine-i2][yReine+j2]!=pos[getX()][getY()] /*NORD-OUEST*/ || posQ[xReine+i2][yReine-j2]!=pos[getX()][getY()]/*SUD-EST*/	) 
+																	
+															) {   
+																//A l'intérieur du if
+															
+																roi().setest_en_échec(true);
+																System.out.println("Roi "+roi().getCoulPièce().name()+" en danger, faut vite bouger !");
+														
+																
+														}//Fin if
+													}//Fin for 6
+													
+												}//Fin for 5
+											}//Fin for 4
+										}//Fin for 3
+									}//Fin for 2
+								}//Fin for 1
+								
 								
 							}else {
 								System.out.println("Tu ne peux pas bouger sur une pièce !");
@@ -154,21 +208,7 @@ public class Reine extends Pièce implements FonctionPièces,Echec_Roi {
 
 	@Override
 	public boolean mettre_en_échec(Roi r) {
-		int posX=reine().getX(), posY=reine().getY();
 		
-		for (int i = 0; i < posX; i++) { //vérifier en horizontal à gauche de la dame
-			for (int j = posX+1; j <8 ; j++) { //vérifier en horizontal à droite de la dame
-				for (int d = 0;  d < posY; d++) { //vérifier en verticale en bas de la dame
-					for (int k = posY+1; k < 8; k++) { //vérifier en vertical en haut de la dame
-						
-						for (int i2 = 0; i2 < posX; i2++) { //
-							
-						}
-						
-					}
-				}
-			}
-		}
 		
 	}
 	

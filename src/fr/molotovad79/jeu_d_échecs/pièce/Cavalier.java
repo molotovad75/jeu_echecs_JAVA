@@ -1,29 +1,41 @@
 package fr.molotovad79.jeu_d_échecs.pièce;
 
 public class Cavalier extends Pièce implements FonctionPièces,Echec_Roi{
-
-	public Cavalier(CouleurPièce coulPièce,Pièce [][] posPièce) {
-		super(coulPièce, "CH",posPièce);
+	private int numéro;
+	private Cavalier[][] posCH=(Cavalier[][]) getPosPièce();
+	
+	public Cavalier(CouleurPièce coulPièce,String initiale,Pièce [][] posPièce,int numéro) {
+		super(coulPièce, initiale,posPièce);
+		this.numéro=numéro;
 	}
 
 	@Override
 	public void manger(Pièce p) {
 		int xCavalier=cavalier().getX(),yCavalier=cavalier().getY();
-		Pièce[][] pos= getPosPièce();
-		pos[x][y]=pos[p1().getX()][p1().getY()];
-		while(pos[xCavalier+1][yCavalier-2]==pos[x][y] ||pos[xCavalier-1][yCavalier-2]==pos[x][y] 
-				||pos[xCavalier-2][yCavalier-1]==pos[x][y]||pos[xCavalier-2][yCavalier+1]==pos[x][y]
-				||pos[xCavalier-1][yCavalier+2]==pos[x][y]||pos[xCavalier+1][yCavalier+2]==pos[x][y]
-				||pos[xCavalier+2][yCavalier+1]==pos[x][y]||pos[xCavalier+2][yCavalier-1]==pos[x][y]
-				&& p1()!=null && p1()!=roi()) {
+		Pièce[][] pos= p.getPosPièce();
+//		pos[x][y]=pos[getX()][getY()];
+		while(posCH[xCavalier+1][yCavalier-2]==pos[p.getX()][p.getY()] || posCH[xCavalier-1][yCavalier-2]==pos[p.getX()][p.getY()] 
+				||posCH[xCavalier-2][yCavalier-1]==pos[p.getX()][p.getY()] || posCH[xCavalier-2][yCavalier+1]==pos[p.getX()][p.getY()]
+				||posCH[xCavalier-1][yCavalier+2]==pos[p.getX()][p.getY()] || posCH[xCavalier+1][yCavalier+2]==pos[p.getX()][p.getY()]
+				||posCH[xCavalier+2][yCavalier+1]==pos[p.getX()][p.getY()] || posCH[xCavalier+2][yCavalier-1]==pos[p.getX()][p.getY()]
+				&& p!=null && p!=roi()) {
+			//Le cavalier est la seule pièce qui peut sauter au dessus des autres pièces.
 			cavalier().setInitiale(null);
-			pos[xCavalier][yCavalier]=pos[x][y];
+			posCH[xCavalier][yCavalier]=(Cavalier) pos[p.getX()][p.getY()];
 			cavalier().setPosPièce(pos);
-			p1().setInitiale(null);
-			cimetiere().ajouter_cimetière(p1()); 
+			p.setInitiale("");
+			cimetiere().ajouter_cimetière(p); 
 			cimetiere().setNbPièces(cimetiere().getNbPièces()+1);
-			p1().equals(null);
-			cavalier().setInitiale("CH");
+			
+			if (p.getCoulPièce().equals(CouleurPièce.BLANC)==true) {
+				cavalier().setInitiale("CH "+cavalier().getCoulPièce().name()+cavalier().getNuméro());
+			}
+			else if(p.getCoulPièce().equals(CouleurPièce.NOIR)==true) {
+				cavalier().setInitiale("CH "+cavalier().getCoulPièce().name()+cavalier().getNuméro());
+			}
+			
+			p.equals(null);
+			
 			
 		}
 	}
@@ -76,6 +88,14 @@ public class Cavalier extends Pièce implements FonctionPièces,Echec_Roi{
 	@Override
 	public boolean mettre_en_échec(Roi r) {
 		
+	}
+
+	public int getNuméro() {
+		return numéro;
+	}
+
+	public void setNuméro(int numéro) {
+		this.numéro = numéro;
 	}
 	
 	/*

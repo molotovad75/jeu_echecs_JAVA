@@ -4,10 +4,13 @@ import java.util.Scanner;
 public class Pion extends Pièce implements FonctionPièces,Echec_Roi{
 	private Scanner sc=new Scanner(System.in);
 	private int nb_move;
+	private int numéro;
+	private Pion[][] posP=(Pion[][]) getPosPièce();
 	
-	public Pion(CouleurPièce coulPièce,String initiale,Pièce[][] posPièce) {
+	public Pion(CouleurPièce coulPièce,String initiale,Pièce[][] posPièce,int numéro) {
 		super(coulPièce, initiale,posPièce);
 		this.nb_move=0;
+		this.numéro=numéro;
 	}
 	
 	/*
@@ -29,10 +32,10 @@ public class Pion extends Pièce implements FonctionPièces,Echec_Roi{
 	public void manger(Pièce p) { //méthode validée
 		int xPion=pion().getX(),yPion=pion().getY();
 		Pièce[][] pos= getPosPièce();
-		while(((pos[xPion-1][yPion+1]==pos[p.getX()][p.getY()] || pos[xPion+1][yPion+1]==pos[p.getX()][p.getY()]) 
+		while(((posP[xPion-1][yPion+1]==pos[p.getX()][p.getY()] || posP[xPion+1][yPion+1]==pos[p.getX()][p.getY()]) 
 				&& pion().getCoulPièce().equals(CouleurPièce.BLANC)==true)
 				
-				||((pos[xPion-1][yPion-1]==pos[p.getX()][p.getY()] || pos[xPion+1][yPion-1]==pos[p.getX()][p.getY()])
+				||((posP[xPion-1][yPion-1]==pos[p.getX()][p.getY()] || posP[xPion+1][yPion-1]==pos[p.getX()][p.getY()])
 				&& pion().getCoulPièce().equals(CouleurPièce.NOIR)==true) 
 				
 				&& p!=null) {
@@ -41,15 +44,15 @@ public class Pion extends Pièce implements FonctionPièces,Echec_Roi{
 				cimetiere().ajouter_cimetière(p);	
 				cimetiere().setNbPièces(cimetiere().getNbPièces()+1);
 				pion().setInitiale("");
-				pos[xPion][yPion]=pos[p.getX()][p.getY()];
+				posP[xPion][yPion]=(Pion) pos[p.getX()][p.getY()];
 				pion().setPosPièce(pos);
 				
 				
 			if (p.getCoulPièce().equals(CouleurPièce.BLANC)==true) {
-				pion().setInitiale("PN");
+				pion().setInitiale("P "+pion().getCoulPièce().name()+pion().getNuméro());
 			}
 			else if(p.getCoulPièce().equals(CouleurPièce.NOIR)==true) {
-				pion().setInitiale("PB");
+				pion().setInitiale("P "+pion().getCoulPièce().name()+pion().getNuméro());
 			}
 			p.equals(null);
 		}
@@ -144,6 +147,20 @@ public class Pion extends Pièce implements FonctionPièces,Echec_Roi{
 		}else
 			return !roi().est_en_échec();
 		
+	}
+
+	/**
+	 * @return the numéro
+	 */
+	public int getNuméro() {
+		return numéro;
+	}
+
+	/**
+	 * @param numéro the numéro to set
+	 */
+	public void setNuméro(int numéro) {
+		this.numéro = numéro;
 	}
 
 }

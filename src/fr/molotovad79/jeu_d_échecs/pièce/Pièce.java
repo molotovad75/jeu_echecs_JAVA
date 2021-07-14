@@ -59,10 +59,10 @@ public class Pièce{
 		return cimetiere();
 	}
 	
-	public Roi roi() {	
+	public static Roi roi() {	
 		return roi();	
 	}
-	public Reine reine() {
+	public static Reine reine() {
 		return reine();
 	}
 	public Pièce p1() {
@@ -72,18 +72,18 @@ public class Pièce{
 		return Pièce.this;
 	}
 	
-	public Pion pion() {
+	public static Pion pion() {
 		return pion();
 	}
-	public Tour tour() {
+	public static Tour tour() {
 		return	tour();
 	}
 	
-	public Fou fou() {
+	public static Fou fou() {
 		return fou();
 	}
 	
-	public Cavalier cavalier() {
+	public static Cavalier cavalier() {
 		return cavalier();
 	}
 }

@@ -2,19 +2,21 @@ package fr.molotovad79.jeu_d_échecs.pièce;
 
 public class Tour extends Pièce implements FonctionPièces,Echec_Roi {
 
+	private int numéro;
 	private Tour[][] posT=(Tour[][]) getPosPièce();
-	public Tour(CouleurPièce coulPièce,String initiale,Pièce[][] posPièce) {
+	public Tour(CouleurPièce coulPièce,String initiale,Pièce[][] posPièce,int numéro) {
 		super(coulPièce,initiale,posPièce);
-		
+		this.setNuméro(numéro);
 	}
 
 	@Override
 	public void manger(Pièce p) { //tour
 		//x et y sont les coordonnés de la cible
 		int xTour=tour().getX(),yTour=tour().getY();
-		Pièce[][] pos= getPosPièce();
+		Pièce[][] pos= p.getPosPièce();
 		
-		while((posT[p.getX()][yTour]==pos[p.getX()][p.getY()] || posT[xTour][p.getY()]==pos[p.getX()][p.getY()]) && pos[p.getX()][p.getY()]!=null && pos[p.getX()][p.getY()]!=roi() 
+		while((posT[p.getX()][yTour]==pos[p.getX()][p.getY()] || posT[xTour][p.getY()]==pos[p.getX()][p.getY()]) 
+				&& pos[p.getX()][p.getY()]!=null && pos[p.getX()][p.getY()]!=roi() 
 /* Tant qu'on veut déplacer la tour en horizontal (yTour ne doit pas changer de valeur) ou en vertical (xTour ne doit pas changer de valeur)
  * la position finale doit être non nulle et différente s'il y a le roi
  * 
@@ -153,12 +155,12 @@ public class Tour extends Pièce implements FonctionPièces,Echec_Roi {
 			for(int j=0;j<yTour;j++) { // À finir !
 				for(int t=xTour+1;t<8;t++) {
 					for(int u=yTour+1;u<8;u++) {	
-						if(( (pos[i][yTour]==pos[r.getX()][r.getY()] &&pos[t][yTour]==pos[r.getX()][r.getY()]) //Si dans le sens horizontal, la tour croise  
-							||(pos[xTour][j]==pos[r.getX()][r.getY()] &&pos[xTour][u]==pos[r.getX()][r.getY()]))
+						if(( (posT[i][yTour]==pos[r.getX()][r.getY()] && posT[t][yTour]==pos[r.getX()][r.getY()]) //Si dans le sens horizontal, la tour croise  
+							||(posT[xTour][j]==pos[r.getX()][r.getY()] && posT[xTour][u]==pos[r.getX()][r.getY()]))
 								
 								//Dans les deux lignes suivantes, on s'assure que la tour ne vas pas rencontrer de pièces sur son chemin entre lui et le roi.
-								&& (pos[i][yTour]!=pos[getX()][getY()] || pos[t][yTour]!=pos[getX()][getY()] 
-								|| pos[xTour][j]!=pos[getX()][getY()] || pos[xTour][u]!=pos[getX()][getY()]) ) { //Si dans le sens vertical, la tour croise  
+								&& (posT[i][yTour]!=pos[getX()][getY()] || posT[t][yTour]!=pos[getX()][getY()] 
+								|| posT[xTour][j]!=pos[getX()][getY()] || posT[xTour][u]!=pos[getX()][getY()]) ) { //Si dans le sens vertical, la tour croise  
 							r.setest_en_échec(true);
 							System.out.println("Roi "+r.getCoulPièce()+" en danger, faut vite bouger !");
 						}
@@ -168,6 +170,20 @@ public class Tour extends Pièce implements FonctionPièces,Echec_Roi {
 			}
 		}
 		return r.est_en_échec();
+	}
+
+	/**
+	 * @return the numéro
+	 */
+	public int getNuméro() {
+		return numéro;
+	}
+
+	/**
+	 * @param numéro the numéro to set
+	 */
+	public void setNuméro(int numéro) {
+		this.numéro = numéro;
 	}
 
 }

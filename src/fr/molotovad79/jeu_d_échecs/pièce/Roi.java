@@ -60,7 +60,7 @@ public class Roi extends Pièce implements FonctionPièces {
 					if (p.getCoulPièce().equals(CouleurPièce.BLANC)==true) {
 						roi().setInitiale("KN");
 					}else if (p.getCoulPièce().equals(CouleurPièce.NOIR)==true ) {
-						roi().setInitiale("KB");
+						roi().setInitiale("K"+roi().getCoulPièce().name());
 					}
 					p.equals(null);
 					
