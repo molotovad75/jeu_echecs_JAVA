@@ -58,6 +58,39 @@ public class Tour extends Pièce implements FonctionPièces,Echec_Roi {
 								
 								p.equals(null);
 								
+								int xRoi=roi().getX(),yRoi=roi().getY();
+								//Pièce[][] pos= getPosPièce();
+								Pièce[][] posR= roi().getPosPièce();
+								
+								//Si la tour peut mettre en échec le roi
+								for (int i1 = 0; i1 < xTour; i1++) { //vérifier en horizontal à gauche de la dame for 1
+									for (int j1 = xTour+1; j1 <8 ; j1++) { //vérifier en horizontal à droite de la dame for 2
+										for (int d1 = 0;  d1 < yTour; d1++) { //vérifier en verticale en bas de la dame for 3
+											for (int k1 = yTour+1; k1 < 8; k1++) { //vérifier en vertical en haut de la dame for 4
+												
+												if ((posT[i1][yTour]==posR[xRoi][yRoi] || posT[j1][yTour]==posR[xRoi][yRoi] //Si dans le sens horizontal, la reine croise  
+													||posT[xTour][d1]==posR[xRoi][yRoi] || posT[xTour][k1]==posR[xRoi][yRoi])
+																
+													&& 
+													(posT[i1][yTour]!=pos[getX()][getY()] || posT[j1][yTour]!=pos[getX()][getY()]
+													|| posT[xTour][d1]!=pos[getX()][getY()] || posT[xTour][k1]!=pos[getX()][getY()])
+														
+													&& posR!=pos
+													&&roi().getCoulPièce().name().equals(tour().getCoulPièce().name())==false) {
+													
+													roi().setest_en_échec(true);
+													System.out.println("Roi "+roi().getCoulPièce().name()+" en danger, faut vite bouger !");
+													
+													
+												}//if
+											
+											}//for
+										}//for
+									}//for
+								}//for
+								
+								
+								
 							}//if
 						}//4eme for
 					}//3eme for

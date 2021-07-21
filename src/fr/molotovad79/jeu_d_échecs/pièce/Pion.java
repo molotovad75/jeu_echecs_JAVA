@@ -82,6 +82,7 @@ public class Pion extends Pièce implements FonctionPièces,Echec_Roi{
 		while((pos[xPion][yPion+1]==pos[x][y] && pion().getCoulPièce()==CouleurPièce.BLANC)
 			||(pos[xPion][yPion-1]==pos[x][y] && pion().getCoulPièce()==CouleurPièce.NOIR) 
 				&& p1().getPosPièce()!=pos&& p2()==null) {
+			
 			if(nb_move==0) {
 				System.out.println("Veux tu te déplacer de 2 cases ? (O/N)");
 				String réponse=sc.nextLine();
@@ -89,25 +90,26 @@ public class Pion extends Pièce implements FonctionPièces,Echec_Roi{
 					pion().setInitiale(null);
 					pos[xPion][yPion]=pos[x][y+1];
 					pion().setPosPièce(pos);
-					pion().setInitiale("P");
+					pion().setInitiale("P "+pion().getCoulPièce().name()+pion().getNuméro());
 					nb_move++;
 				}else if((réponse=="o" ||réponse=="O")&& pion().getCoulPièce()==CouleurPièce.NOIR) {
 					pion().setInitiale(null);
 					pos[xPion][yPion]=pos[x][y-1];
 					pion().setPosPièce(pos);
-					pion().setInitiale("P");
+					pion().setInitiale("P "+pion().getCoulPièce().name()+pion().getNuméro());
 					nb_move++;
-				}else if(réponse=="n" ||réponse=="N") {
+				}else if(réponse=="n" || réponse=="N") {
 					pion().setInitiale(null);
 					pos[xPion][yPion]=pos[x][y];
 					pion().setPosPièce(pos);
-					pion().setInitiale("P");
+					pion().setInitiale("P "+pion().getCoulPièce().name()+pion().getNuméro());
+					nb_move++;
 				}
 			}else {
 				pion().setInitiale(null);
 				pos[xPion][yPion]=pos[x][y];
 				pion().setPosPièce(pos);
-				pion().setInitiale("P");
+				pion().setInitiale("P "+pion().getCoulPièce().name()+pion().getNuméro());
 				nb_move++;
 			}
 			
@@ -133,19 +135,21 @@ public class Pion extends Pièce implements FonctionPièces,Echec_Roi{
 	@Override
 	public boolean mettre_en_échec(Roi r) { //méthode réglée
 		int xPion=pion().getX(),yPion=pion().getY();
-		Pièce[][] pos= getPosPièce();
+		Pièce[][] posR= roi().getPosPièce();
+		Pièce[][] posP=pion().getPosPièce();
 		//pion blanc
-		if( ((pos[xPion-1][yPion+1]==pos[roi().getX()][roi().getY()] ||pos[xPion+1][yPion+1]==pos[roi().getX()][roi().getY()]) &&
+		if( ((posP[xPion-1][yPion+1]==posR[roi().getX()][roi().getY()] ||posP[xPion+1][yPion+1]==posR[roi().getX()][roi().getY()]) &&
 				 pion().getCoulPièce()==CouleurPièce.BLANC && roi().getCoulPièce()==CouleurPièce.NOIR)
 				
 				//Pion noir
-				|| ((pos[xPion-1][yPion-1]==pos[roi().getX()][roi().getY()] || pos[xPion+1][yPion-1]==pos[roi().getX()][roi().getY()]) && 
+				|| ((posP[xPion-1][yPion-1]==posR[roi().getX()][roi().getY()] || posP[xPion+1][yPion-1]==posR[roi().getX()][roi().getY()]) && 
 						pion().getCoulPièce()==CouleurPièce.NOIR && roi().getCoulPièce()==CouleurPièce.BLANC) ) {
 			//Le roi est en échec !
 			roi().setest_en_échec(true);
 			return roi().est_en_échec();
 		}else
-			return !roi().est_en_échec();
+			roi().setest_en_échec(false);
+			return roi().est_en_échec();
 		
 	}
 

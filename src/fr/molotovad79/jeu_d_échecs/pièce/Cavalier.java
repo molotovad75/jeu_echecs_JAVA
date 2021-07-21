@@ -19,8 +19,8 @@ public class Cavalier extends Pièce implements FonctionPièces,Echec_Roi{
 				||posCH[xCavalier-1][yCavalier+2]==pos[p.getX()][p.getY()] || posCH[xCavalier+1][yCavalier+2]==pos[p.getX()][p.getY()]
 				||posCH[xCavalier+2][yCavalier+1]==pos[p.getX()][p.getY()] || posCH[xCavalier+2][yCavalier-1]==pos[p.getX()][p.getY()]
 				&& p!=null && p!=roi()) {
-			//Le cavalier est la seule pièce qui peut sauter au dessus des autres pièces.
-			cavalier().setInitiale(null);
+			//Le cavalier est la seule pièce qui peut sauter au dessus des autres pièces. Le while suffit
+			cavalier().setInitiale("");
 			posCH[xCavalier][yCavalier]=(Cavalier) pos[p.getX()][p.getY()];
 			cavalier().setPosPièce(pos);
 			p.setInitiale("");
@@ -36,6 +36,23 @@ public class Cavalier extends Pièce implements FonctionPièces,Echec_Roi{
 			
 			p.equals(null);
 			
+			//vérifier que le cavalier met en échec ou pas le roi.
+			
+			int xRoi=roi().getX(),yRoi=roi().getY();
+			Pièce[][] posR= roi().getPosPièce();
+			
+			//Si le cavalier est en mesure de mettre en échec le roi !
+			if ((posCH[xCavalier+1][yCavalier-2]==posR[xRoi][yRoi] || posCH[xCavalier-1][yCavalier-2]==posR[xRoi][yRoi] 
+				||posCH[xCavalier-2][yCavalier-1]==posR[xRoi][yRoi] || posCH[xCavalier-2][yCavalier+1]==posR[xRoi][yRoi]
+				||posCH[xCavalier-1][yCavalier+2]==posR[xRoi][yRoi] || posCH[xCavalier+1][yCavalier+2]==posR[xRoi][yRoi]
+				||posCH[xCavalier+2][yCavalier+1]==posR[xRoi][yRoi] || posCH[xCavalier+2][yCavalier-1]==posR[xRoi][yRoi])
+				
+			&&roi().getCoulPièce().name().equals(cavalier().getCoulPièce().name())==false && posR!=pos) {
+				
+				roi().setest_en_échec(true);
+				System.out.println("Roi "+roi().getCoulPièce().name()+" en danger, faut vite bouger !");
+				
+			}
 			
 		}
 	}

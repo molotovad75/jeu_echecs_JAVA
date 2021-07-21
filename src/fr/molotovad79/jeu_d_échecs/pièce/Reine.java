@@ -137,6 +137,7 @@ public class Reine extends Pièce implements FonctionPièces,Echec_Roi {
 								//Pièce[][] pos= getPosPièce();
 								Pièce[][] posR= roi().getPosPièce();
 								
+								//Si la reine est en mesure de mettre en échec le roi !
 								for (int i1 = 0; i1 < xReine; i1++) { //vérifier en horizontal à gauche de la dame for 1
 									for (int j1 = xReine+1; j1 <8 ; j1++) { //vérifier en horizontal à droite de la dame for 2
 										for (int d1 = 0;  d1 < yReine; d1++) { //vérifier en verticale en bas de la dame for 3
@@ -145,23 +146,25 @@ public class Reine extends Pièce implements FonctionPièces,Echec_Roi {
 												for (int i2 = 1; i2 < 8; i2++) {  //for 5
 													for (int j2 = 1; j2 < 8; j2++) { //for 6
 														//1ère partie du if on vérifie s'il ya le roi.
-														if(( 	posQ[i1][yReine]==posR[xRoi][yRoi] || posQ[j1][yReine]==posR[xRoi][yRoi] //Si dans le sens horizontal, la reine croise  
-																||posQ[xReine][d1]==posR[xRoi][yRoi] || posQ[xReine][k1]==posR[xRoi][yRoi]
-																/*Les deux lignes au dessus, on s'assure que la dame repère le roi en horizontal et vertical*/	
-																|| posQ[xReine+i2][yReine+j2]==posR[xRoi][yRoi] /*NORD-EST*/ || posQ[xReine-i2][yReine-j2]==posR[xRoi][yRoi] /*SUD-OUEST*/ 
-																|| posQ[xReine-i2][yReine+j2]==posR[xRoi][yRoi] /*NORD-OUEST*/ || posQ[xReine+i2][yReine-j2]==posR[xRoi][yRoi]/*SUD-EST*/)
-																/*Les lignes au dessus on assure les diagonales de la reine*/
-																
-																
-																	&&
+												      if((posQ[i1][yReine]==posR[xRoi][yRoi] || posQ[j1][yReine]==posR[xRoi][yRoi] //Si dans le sens horizontal, la reine croise  
+														||posQ[xReine][d1]==posR[xRoi][yRoi] || posQ[xReine][k1]==posR[xRoi][yRoi]
+														/*Les deux lignes au dessus, on s'assure que la dame repère le roi en horizontal et vertical*/	
+														|| posQ[xReine+i2][yReine+j2]==posR[xRoi][yRoi] /*NORD-EST*/ || posQ[xReine-i2][yReine-j2]==posR[xRoi][yRoi] /*SUD-OUEST*/ 
+														|| posQ[xReine-i2][yReine+j2]==posR[xRoi][yRoi] /*NORD-OUEST*/ || posQ[xReine+i2][yReine-j2]==posR[xRoi][yRoi]/*SUD-EST*/)
+														/*Les lignes au dessus on assure les diagonales de la reine*/
+														
+														
+															&&
+															
+															(posQ[i1][yReine]!=pos[getX()][getY()] || posQ[j1][yReine]!=pos[getX()][getY()] 
+															|| posQ[xReine][d1]!=pos[getX()][getY()] || posQ[xReine][k1]!=pos[getX()][getY()]
+														/*Les deux lignes au dessus, on s'assure que la dame ne rencontre pas de pièces en horizontal et vertical entre elle et le roi*/
+															|| posQ[xReine+i2][yReine+j2]!=pos[getX()][getY()] /*NORD-EST*/ || posQ[xReine-i2][yReine-j2]!=pos[getX()][getY()] /*SUD-OUEST*/ 
+															|| posQ[xReine-i2][yReine+j2]!=pos[getX()][getY()] /*NORD-OUEST*/ || posQ[xReine+i2][yReine-j2]!=pos[getX()][getY()]/*SUD-EST*/	) 
 																	
-																	(posQ[i1][yReine]!=pos[getX()][getY()] || posQ[j1][yReine]!=pos[getX()][getY()] 
-																	|| posQ[xReine][d1]!=pos[getX()][getY()] || posQ[xReine][k1]!=pos[getX()][getY()]
-																/*Les deux lignes au dessus, on s'assure que la dame ne rencontre pas de pièces en horizontal et vertical entre elle et le roi*/
-																	|| posQ[xReine+i2][yReine+j2]!=pos[getX()][getY()] /*NORD-EST*/ || posQ[xReine-i2][yReine-j2]!=pos[getX()][getY()] /*SUD-OUEST*/ 
-																	|| posQ[xReine-i2][yReine+j2]!=pos[getX()][getY()] /*NORD-OUEST*/ || posQ[xReine+i2][yReine-j2]!=pos[getX()][getY()]/*SUD-EST*/	) 
-																	
-															) {   
+															&&
+															roi().getCoulPièce().name().equals(reine().getCoulPièce().name())==false
+															&& posR!=pos) {   
 																//A l'intérieur du if
 															
 																roi().setest_en_échec(true);

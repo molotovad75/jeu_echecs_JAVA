@@ -38,27 +38,29 @@ public class Roi extends Pièce implements FonctionPièces {
 	public void manger(Pièce p) { //méthode validée
 		int xRoi=roi().getX(),yRoi=roi().getY();
 		Pièce[][] pos= getPosPièce();
+		
+		Pièce[][] posR=roi().getPosPièce();
 		//pos[x][y]=pos[p1().getX()][p1().getY()];			
-			while((pos[p.getX()-1][p.getY()-1]==pos[xRoi][yRoi]   ||pos[p.getX()][p.getY()-1]==pos[xRoi][yRoi] 
-					||pos[p.getX()+1][p.getY()-1]==pos[xRoi][yRoi] ||pos[p.getX()+1][p.getY()]==pos[xRoi][yRoi]
-					||pos[p.getX()+1][p.getY()+1]==pos[xRoi][yRoi] ||pos[p.getX()][p.getY()+1]==pos[xRoi][yRoi] 
-					||pos[p.getX()-1][p.getY()+1]==pos[xRoi][yRoi] ||pos[p.getX()-1][p.getY()]==pos[xRoi][yRoi]) 
-					&&  p1()!=roi() &&  p1()!=null) {
+			while((pos[p.getX()-1][p.getY()-1]==posR[xRoi][yRoi]   ||pos[p.getX()][p.getY()-1]==posR[xRoi][yRoi] 
+					||pos[p.getX()+1][p.getY()-1]==posR[xRoi][yRoi] ||pos[p.getX()+1][p.getY()]==posR[xRoi][yRoi]
+					||pos[p.getX()+1][p.getY()+1]==posR[xRoi][yRoi] ||pos[p.getX()][p.getY()+1]==posR[xRoi][yRoi] 
+					||pos[p.getX()-1][p.getY()+1]==posR[xRoi][yRoi] ||pos[p.getX()-1][p.getY()]==posR[xRoi][yRoi]) 
+					&&  p!=roi() &&  p!=null) {
 				
 				if(p.equals(roi())==true) {
 					System.out.println("Deux roi ne peuvent pas s'entre manger !\n "
 							+ "De plus ils ne peuvent se mettrent en échec tous les deux.");
 				}else {
 					roi().setInitiale("");
-					pos[xRoi][yRoi]=pos[p.getX()][p.getY()];	
-					roi().setPosPièce(pos);
+					posR[xRoi][yRoi]=pos[p.getX()][p.getY()];	
+					roi().setPosPièce(posR);
 					p.setInitiale("");
 					cimetiere().ajouter_cimetière(p);
 					cimetiere().setNbPièces(cimetiere().getNbPièces()+1);
 					
 					
 					if (p.getCoulPièce().equals(CouleurPièce.BLANC)==true) {
-						roi().setInitiale("KN");
+						roi().setInitiale("K"+roi().getCoulPièce().name());
 					}else if (p.getCoulPièce().equals(CouleurPièce.NOIR)==true ) {
 						roi().setInitiale("K"+roi().getCoulPièce().name());
 					}
@@ -76,17 +78,20 @@ public class Roi extends Pièce implements FonctionPièces {
 	public void bouger(int x, int y) {
 		int xRoi=roi().getX(),yRoi=roi().getY();
 		Pièce[][] pos= getPosPièce();
+		Pièce[][] pos2= getPosPièce();
+		Pièce[][] posR=roi().getPosPièce();
 		pos[x][y]=null;
-		while((pos[x-1][y-1]==pos[xRoi][yRoi]   ||pos[x][y-1]==pos[xRoi][yRoi] ||pos[x+1][y-1]==pos[xRoi][yRoi] ||pos[x+1][y]==pos[xRoi][yRoi]
-				||pos[x+1][y+1]==pos[xRoi][yRoi] ||pos[x][y+1]==pos[xRoi][yRoi] ||pos[x-1][y+1]==pos[xRoi][yRoi] ||pos[x-1][y]==pos[xRoi][yRoi]) 
-				&& pos[x][y]!=pos[p1().getX()][p1().getY()]) {
-			if(pos[x][y]==pos[p1().getX()][p1().getY()]) {
+		
+		while((pos[x-1][y-1]==posR[xRoi][yRoi]  || pos[x][y-1]==posR[xRoi][yRoi] || pos[x+1][y-1]==posR[xRoi][yRoi] || pos[x+1][y]==posR[xRoi][yRoi]
+				||pos[x+1][y+1]==posR[xRoi][yRoi] || pos[x][y+1]==posR[xRoi][yRoi] || pos[x-1][y+1]==posR[xRoi][yRoi] || pos[x-1][y]==posR[xRoi][yRoi]) 
+				&& pos[x][y]!=pos2[getX()][getY()]) {
+			if(pos2[getX()][getY()]!=null && pos[x][y]==pos2[getX()][getY()]) {
 				System.out.println("Vous ne pouvez pas bouger sur une autre pièce ! Autant la bouffer ;)");
 			}else {
-				roi().setInitiale(null);
-				pos[xRoi][yRoi]=pos[x][y];	
-				roi().setPosPièce(pos);
-				roi().setInitiale("K");
+				roi().setInitiale("");
+				posR[xRoi][yRoi]=pos[x][y];	
+				roi().setPosPièce(posR);
+				roi().setInitiale(roi().getInitiale());
 			}	
 		}
 		
